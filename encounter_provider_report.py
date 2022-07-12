@@ -7,12 +7,13 @@ class EP_DetReport_Page():
         self.driver = driver
         self.wait = wait
         self.href = "EncounterProvidersDetailedReport"
-        self.select_all_id = "_ctl0_ContentPlaceHolder1_chkSelectEncounterProvidersAll"
+        self.select_all_id = "_ctl0_ContentPlaceHolder1_chkSelectAllProviders"
         self.cpt_txtbox_id = '_ctl0_ContentPlaceHolder1_txtcpt'
 
     def make_soup(self):
         return BeautifulSoup(self.driver.page_source, "html.parser")
 
+    # Deselects all the encounter providers
     def deselect_ep(self):
         chk = self.driver.find_element(By.ID, self.select_all_id)
         if chk.get_attribute("checked"):
@@ -20,9 +21,10 @@ class EP_DetReport_Page():
         else:
             print("Already Unchecked")
 
+    # Selects a single encounter provider
     def select_ep(self, name):
         soup = self.make_soup()
-        table = soup.find_all("table", id = "_ctl0_ContentPlaceHolder1_chkEncounterProvider")
+        table = soup.find_all("table", id = "_ctl0_ContentPlaceHolder1_chkProvider")
         body = table[0].find("tbody")
 
         for i in body.find_all("label"):

@@ -20,7 +20,7 @@ class CPTs_Report_Page():
 
     def pull(self, savefile):
         try:
-            self.wait.until(EC.presence_of_element_located((By.ID, "_ctl0_ContentPlaceHolder1_gvreport")))
+            table = self.wait.until(EC.presence_of_element_located((By.ID, "_ctl0_ContentPlaceHolder1_gvreport")))
             soup = self.make_soup()
             table = soup.find_all("table", id = "_ctl0_ContentPlaceHolder1_gvreport")
             body = table[0].find("tbody")

@@ -54,8 +54,8 @@ class RunTest(unittest.TestCase):
         driver.get("https://service.emedpractice.com/index.aspx")
 
         login = LoginPage(driver, wait)
-        login.enter_username("")
-        login.enter_password("") 
+        login.enter_username("ddykstra")
+        login.enter_password("Temp1234!") 
         login.click_login()
 
         nav = Navigate(driver, wait)
@@ -66,7 +66,7 @@ class RunTest(unittest.TestCase):
         cpt.enter_cpt_code("99214,99123")
         
         stage = Stage(driver, wait)
-        stage.stage_dr("0-10-2022", "05-29-2022", 28)
+        stage.stage_dr("05-10-2022", "05-29-2022", 28)
         time.sleep(5)
     
     ## EXAMPLE GET PROVIDER REPORT

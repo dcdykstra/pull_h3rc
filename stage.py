@@ -78,6 +78,18 @@ class Stage():
             # cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\{v[0]}_{v[1]}.csv")
             cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\temp{i}.csv")
     
+    # Manual staging for situation when you want to use flask app
+    def stage_dr_manual(self, savefile, date_from_val, date_to_val, day_intervals=28):
+        split_range = self.date_range_gr30(date_from_val, date_to_val, day_intervals)
+        cpt = CPTs_Report_Page(self.driver, self.wait)
+        date_select = Select(self.wait.until(EC.element_to_be_clickable((By.ID, '_ctl0_ContentPlaceHolder1_ddltypes'))))
+        date_select.select_by_value("R")
+
+        for i,v in enumerate(split_range):
+            self.set_date("YTD", v[0], v[1])
+            # cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\{v[0]}_{v[1]}.csv")
+            cpt.pull(savefile = f"{savefile}\\temp{i}.csv")
+    
     def stage_month(self, month, year):
         sb = Select(self.wait.until(EC.element_to_be_clickable((By.ID, '_ctl0_ContentPlaceHolder1_ddltypes'))))
         sb.select_by_value("M")

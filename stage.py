@@ -15,11 +15,12 @@ from datetime import timedelta
 class Stage():
     def __init__(self, driver, wait) -> None:
         self.driver = driver
+        self.mydir = ""
         self.wait = wait
         self.run_btn_id = '_ctl0_ContentPlaceHolder1_btnRunItNow'
 
     def merge(self, savefile):
-        files = os.path.join("E:\\dir1\\h3rc\\cpt_codes\\data\\", "*.csv")
+        files = os.path.join(self.mydir, "*.csv")
         files = glob.glob(files)
         df = pd.concat(map(pd.read_csv, files), ignore_index = True)
         df = df.iloc[: , 1:]
@@ -75,8 +76,7 @@ class Stage():
 
         for i,v in enumerate(split_range):
             self.set_date("YTD", v[0], v[1])
-            # cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\{v[0]}_{v[1]}.csv")
-            cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\temp{i}.csv")
+            cpt.pull(savefile = f"{self.mydir}temp{i}.csv")
     
     # Manual staging for situation when you want to use flask app
     def stage_dr_manual(self, savefile, date_from_val, date_to_val, day_intervals=28):
@@ -87,7 +87,6 @@ class Stage():
 
         for i,v in enumerate(split_range):
             self.set_date("YTD", v[0], v[1])
-            # cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\{v[0]}_{v[1]}.csv")
             cpt.pull(savefile = f"{savefile}\\temp{i}.csv")
     
     def stage_month(self, month, year):
@@ -102,7 +101,7 @@ class Stage():
         run.click()
 
         cpt = CPTs_Report_Page(self.driver, self.wait)
-        cpt.pull(savefile = f"E:\\dir1\\h3rc\\cpt_codes\\data\\pull.csv")
+        cpt.pull(savefile = f"{self.mydir}pull.csv")
 
     # Navigates to each patient chart in a list of patient charts then pulls the demogrpahic data from each patient chart
     def stage_demo(self, chart_ls):
@@ -114,5 +113,4 @@ class Stage():
             temp = patient.pull_patient_data()
             temp.update({"Chart #" : i})
             df.append(temp)
-        pd.DataFrame(df).to_csv(f"E:\\dir1\\h3rc\\cpt_codes\\data\\pull{i}.csv")
-            # cpt.pull(savefile = f"C:\\dir1\\cpt_codes\\data\\temp{i}.csv")
+        pd.DataFrame(df).to_csv(f"{self.mydir}pull{i}.csv")
